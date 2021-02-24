@@ -2,8 +2,30 @@ import React, {Component} from "react";
 import {View, Image} from "@tarojs/components";
 import './home.less'
 import PlusIcon from '../../assets/icon/plus.png'
+import {Fund, FundApi} from "../../api/fund.api";
+
+interface Index {
+  state: {
+    list: Fund[]
+  }
+}
 
 class Index extends Component {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      list: []
+    }
+  }
+
+  async componentDidShow() {
+    let res = await FundApi.listByMemberId()
+    if (res.success) {
+      this.setState({
+        list: res.data
+      })
+    }
+  }
 
   zfColor(zf: string) {
     if (parseInt(zf) > 0) {
@@ -31,254 +53,29 @@ class Index extends Component {
         </View>
         <View className='body'>
           <View className='list'>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
+            {
+              this.state.list.map(fund => {
+                return <View className='item' key={fund.id}>
+                  <View className='col'>
+                    <View className='name'>
+                      {fund.name}
+                    </View>
+                    <View className='code'>{fund.code}</View>
+                  </View>
+                  <View className='col right'>
+                    <View className='jz show-col'>
+                      <View className='price'>2.2214</View>
+                      <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
+                      <View className='date'>02-22</View>
+                    </View>
+                    <View className='gz show-col'>
+                      <View className='price'>2.2214</View>
+                      <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
+                    </View>
+                  </View>
                 </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-            <View className='item'>
-              <View className='col'>
-                <View className='name'>
-                  圆信永丰多策略精选混合
-                </View>
-                <View className='code'>004148</View>
-              </View>
-              <View className='col right'>
-                <View className='jz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                  <View className='date'>02-22</View>
-                </View>
-                <View className='gz show-col'>
-                  <View className='price'>2.2214</View>
-                  <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                </View>
-              </View>
-            </View>
-
+              })
+            }
 
           </View>
           <View className='plus'>

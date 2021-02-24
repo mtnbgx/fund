@@ -5,8 +5,9 @@ import './index.less'
 interface Props {
   className?: string
   children?: any
+  formType?: string
 }
 
 export function CButton(props: Props) {
-  return <Button className={'c-button ' + props.className}>{props.children}</Button>
+  return <Button className={'c-button ' + props.className} formType='submit'>{props.children}</Button>
 }
