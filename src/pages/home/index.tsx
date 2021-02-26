@@ -1,92 +1,99 @@
 import React, {Component} from "react";
 import {View, Image} from "@tarojs/components";
-import './home.less'
+import Taro from '@tarojs/taro'
+import './index.less'
 import PlusIcon from '../../assets/icon/plus.png'
-import {Fund, FundApi} from "../../api/fund.api";
+import {Fund} from "../../api/fund.api";
+import {tinyHelp} from '../../utils/tinyHelp';
+import {FundItem} from './components/fundItem/fund.item';
+import {Monitor, MonitorApi} from '../../api/monitor.api';
+import {AddFund} from './components/addFund';
 
 interface Index {
-  state: {
-    list: Fund[]
-  }
+    state: {
+        list: Monitor[],
+        form: { visible: boolean, monitorId?: number, fund?: Fund }
+    }
 }
 
 class Index extends Component {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      list: []
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            list: [],
+            form: {visible: false}
+        }
     }
-  }
 
-  async componentDidShow() {
-    let res = await FundApi.listByMemberId()
-    if (res.success) {
-      this.setState({
-        list: res.data
-      })
+    async componentDidShow() {
+        let res = await MonitorApi.list()
+        if (res.success) {
+            this.setState({
+                list: res.data
+            })
+        }
     }
-  }
 
-  zfColor(zf: string) {
-    if (parseInt(zf) > 0) {
-      return '#d81e06'
-    } else {
-      return 'green'
+    zfColor(zf: string) {
+        if (parseInt(zf) > 0) {
+            return '#d81e06'
+        } else {
+            return 'green'
+        }
     }
-  }
 
-  render() {
-    return (
-      <View className='home-page'>
-        <View className='header'>
-          <View className='title'>基金名称</View>
-          <View className='col'>
-            <View className='jz show-col'>
-              <View className='name'>净值</View>
-              <View className='date'>02-23</View>
-            </View>
-            <View className='gz show-col'>
-              <View className='name'>估值</View>
-              <View className='date'>02-23</View>
-            </View>
-          </View>
-        </View>
-        <View className='body'>
-          <View className='list'>
-            {
-              this.state.list.map(fund => {
-                return <View className='item' key={fund.id}>
-                  <View className='col'>
-                    <View className='name'>
-                      {fund.name}
+    longPress = async (fund: Fund, monitor: Monitor) => {
+        const index = await tinyHelp.showActionSheet([`删除 ${fund.name}`])
+        if (index === 0) {
+            await MonitorApi.delMonitor(monitor.id)
+            await Taro.showToast({title: '删除成功'})
+            await this.componentDidShow()
+        }
+    }
+
+
+    render() {
+        return (
+            <View className='home-page'>
+                <View className='header'>
+                    <View className='title'>基金名称</View>
+                    <View className='col'>
+                        <View className='jz show-col'>
+                            <View className='name'>净值</View>
+                            <View className='date'>02-23</View>
+                        </View>
+                        <View className='gz show-col'>
+                            <View className='name'>估值</View>
+                            <View className='date'>02-23</View>
+                        </View>
                     </View>
-                    <View className='code'>{fund.code}</View>
-                  </View>
-                  <View className='col right'>
-                    <View className='jz show-col'>
-                      <View className='price'>2.2214</View>
-                      <View className='zf' style={{'color': this.zfColor('4.44')}}>4.44%</View>
-                      <View className='date'>02-22</View>
-                    </View>
-                    <View className='gz show-col'>
-                      <View className='price'>2.2214</View>
-                      <View className='zf' style={{'color': this.zfColor('-4.44')}}>-4.44%</View>
-                    </View>
-                  </View>
                 </View>
-              })
-            }
-
-          </View>
-          <View className='plus'>
-            <Image src={PlusIcon} className='plus-icon'></Image>
-            添加自选
-          </View>
-          <View className='ps'>最新估值根据基金持仓和指数走势估算，仅供参考，实际涨跌幅以基金公司披露为准。</View>
-        </View>
-      </View>
-    );
-  }
+                <View className='body'>
+                    <View className='list'>
+                        {
+                            this.state.list.map(monitor => {
+                                return <FundItem fund={monitor.fund} key={monitor.id}
+                                  onLongPress={(fund) => this.longPress(fund, monitor)}
+                                  onClick={(fund) => {
+                                                     this.setState({form: {visible: true, fund, monitorId: monitor.id}})
+                                                 }}
+                                />
+                            })
+                        }
+                    </View>
+                    <View className='plus' onClick={() => Taro.navigateTo({url: '/pages/home/search'})}>
+                        <Image src={PlusIcon} className='plus-icon' />
+                        添加自选
+                    </View>
+                    <View className='ps'>最新估值根据基金持仓和指数走势估算，仅供参考，实际涨跌幅以基金公司披露为准。</View>
+                </View>
+                <AddFund visible={this.state.form.visible} hide={() => {
+                    this.setState({form: {visible: false}})
+                }} fund={this.state.form.fund}
+                />
+            </View>
+        );
+    }
 }
 
 export default Index

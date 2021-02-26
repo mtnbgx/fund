@@ -1,13 +1,23 @@
 import React from "react";
 import {Button} from "@tarojs/components";
-import './index.less'
+import styles from './index.module.less'
+
+type FormType = 'submit' | 'reset'
+type Size = 'normal' | 'mini'
 
 interface Props {
   className?: string
   children?: any
-  formType?: string
+  formType?: FormType
+  size?: Size
+  onClick?: () => void
 }
 
 export function CButton(props: Props) {
-  return <Button className={'c-button ' + props.className} formType='submit'>{props.children}</Button>
+  let className = `${styles.button} `
+  if (props.size === 'mini') {
+    className += `${styles.mini} `
+  }
+  className += props.className
+  return <Button className={className} formType={props.formType} onClick={props.onClick}>{props.children}</Button>
 }

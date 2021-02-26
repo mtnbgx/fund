@@ -5,11 +5,13 @@ import counterStore from './store/counter'
 import {appStore} from "./store/app.store";
 
 import './app.less'
+import {fundStore} from "./store/fund.store";
 
 
 const store = {
   counterStore,
-  appStore
+  appStore,
+  fundStore
 }
 
 class App extends Component {
