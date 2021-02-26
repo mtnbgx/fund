@@ -5,7 +5,7 @@ import Taro from '@tarojs/taro'
 import {FundStore} from "@/store/fund.store";
 import {Fund} from "@/api/fund.api";
 import {CButton} from "@/components/cButton";
-import {AddFund} from "./components/addFund";
+import {AddFund} from "./components/addFund/addMonitor";
 import {FundItem} from './components/fundItem/fund.item';
 
 

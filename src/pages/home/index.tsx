@@ -5,14 +5,15 @@ import PlusIcon from '@/assets/icon/plus.png'
 import {Fund} from "@/api/fund.api";
 import {tinyHelp} from '@/utils/tinyHelp';
 import {Monitor, MonitorApi} from '@/api/monitor.api';
+import {UpdateMonitor} from '@/pages/home/components/addFund/updateMonitor';
 import {FundItem} from './components/fundItem/fund.item';
-import {AddFund} from './components/addFund';
 import './index.less'
+
 
 interface Index {
     state: {
         list: Monitor[],
-        form: { visible: boolean, monitorId?: number, fund?: Fund }
+        form: { visible: boolean, monitor: Monitor }
     }
 }
 
@@ -21,6 +22,7 @@ class Index extends Component {
         super(props);
         this.state = {
             list: [],
+            // @ts-ignore
             form: {visible: false}
         }
     }
@@ -73,9 +75,9 @@ class Index extends Component {
                         {
                             this.state.list.map(monitor => {
                                 return <FundItem fund={monitor.fund} key={monitor.id}
-                                  onLongPress={(fund) => this.longPress(fund, monitor)}
-                                  onClick={(fund) => {
-                                                     this.setState({form: {visible: true, fund, monitorId: monitor.id}})
+                                                 onLongPress={(fund) => this.longPress(fund, monitor)}
+                                                 onClick={() => {
+                                                     this.setState({form: {visible: true, monitor}})
                                                  }}
                                 />
                             })
@@ -87,9 +89,9 @@ class Index extends Component {
                     </View>
                     <View className='ps'>最新估值根据基金持仓和指数走势估算，仅供参考，实际涨跌幅以基金公司披露为准。</View>
                 </View>
-                <AddFund visible={this.state.form.visible} hide={() => {
+                <UpdateMonitor visible={this.state.form.visible} hide={() => {
                     this.setState({form: {visible: false}})
-                }} fund={this.state.form.fund}
+                }} monitor={this.state.form.monitor} refresh={() => this.componentDidShow()}
                 />
             </View>
         );

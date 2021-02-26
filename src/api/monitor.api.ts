@@ -2,7 +2,7 @@ import {request} from '../utils/request';
 import {Fund} from './fund.api';
 
 interface AddMonitor {
-    code: string
+    fundId: number
     up: string
     down: string
 }
@@ -22,6 +22,12 @@ export class MonitorApi {
 
     static async addMonitor(data: AddMonitor) {
         return request<number, AddMonitor>({url: '/api/monitor/addMonitor', method: 'POST', data})
+    }
+
+    static async updateMonitor(monitorId: number, data: AddMonitor) {
+        return request<number, AddMonitor>({
+            url: `/api/monitor/updateMonitor?monitorId=${monitorId}`, method: 'POST', data
+        })
     }
 
     static async delMonitor(id: number) {
