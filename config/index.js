@@ -1,3 +1,5 @@
+import * as path from 'path'
+
 const config = {
     projectName: 'fund',
     date: '2021-2-23',
@@ -53,6 +55,14 @@ const config = {
                 }
             }
         }
+    },
+    alias: {
+        '@/components': path.resolve(__dirname, '..', 'src/components'),
+        '@/utils': path.resolve(__dirname, '..', 'src/utils'),
+        '@/pages': path.resolve(__dirname, '..', 'src/pages'),
+        '@/api': path.resolve(__dirname, '..', 'src/api'),
+        '@/assets': path.resolve(__dirname, '..', 'src/assets'),
+        '@/store': path.resolve(__dirname, '..', 'src/store'),
     }
 }
 

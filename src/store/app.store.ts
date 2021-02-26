@@ -1,6 +1,6 @@
 import {action, observable} from "mobx";
 import Taro from '@tarojs/taro'
-import {LoginParam, MemberApi} from "../api/member.api";
+import {LoginParam, MemberApi} from "@/api/member.api";
 
 interface Auth {
   access_token: string

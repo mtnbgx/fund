@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {View, Input, Form} from "@tarojs/components";
 import {inject, observer} from "mobx-react";
-import {CButton} from "../../components/cButton";
+import {CButton} from "@/components/cButton";
+import {AppStore} from "@/store/app.store";
 import './index.less'
-import {AppStore} from "../../store/app.store";
 
 type PageStateProps = {
   store: {
@@ -32,8 +32,8 @@ class Index extends Component {
         </View>
         <View className='form'>
           <Form onSubmit={this.formSubmit}>
-            <Input name='username' type='text' placeholder='账号' focus/>
-            <Input name='password' type='text' password placeholder='密码'/>
+            <Input name='username' type='text' placeholder='账号' focus />
+            <Input name='password' type='text' password placeholder='密码' />
             <CButton className='sub' form-type='submit'>登录</CButton>
             <View className='row'>
               <View className='reg'>注册账号</View>

@@ -2,9 +2,9 @@ import {inject, observer} from "mobx-react";
 import React, {Component} from "react";
 import {View} from "@tarojs/components";
 import Taro from '@tarojs/taro'
-import {FundStore} from "../../store/fund.store";
-import {Fund} from "../../api/fund.api";
-import {CButton} from "../../components/cButton";
+import {FundStore} from "@/store/fund.store";
+import {Fund} from "@/api/fund.api";
+import {CButton} from "@/components/cButton";
 import {AddFund} from "./components/addFund";
 import {FundItem} from './components/fundItem/fund.item';
 

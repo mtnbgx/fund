@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
 import {Provider} from 'mobx-react'
-
 import counterStore from './store/counter'
 import {appStore} from "./store/app.store";
-
-import './app.less'
 import {fundStore} from "./store/fund.store";
+import './app.less'
 
 
 const store = {

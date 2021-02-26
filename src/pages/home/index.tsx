@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 import {View, Image} from "@tarojs/components";
 import Taro from '@tarojs/taro'
-import './index.less'
-import PlusIcon from '../../assets/icon/plus.png'
-import {Fund} from "../../api/fund.api";
-import {tinyHelp} from '../../utils/tinyHelp';
+import PlusIcon from '@/assets/icon/plus.png'
+import {Fund} from "@/api/fund.api";
+import {tinyHelp} from '@/utils/tinyHelp';
+import {Monitor, MonitorApi} from '@/api/monitor.api';
 import {FundItem} from './components/fundItem/fund.item';
-import {Monitor, MonitorApi} from '../../api/monitor.api';
 import {AddFund} from './components/addFund';
+import './index.less'
 
 interface Index {
     state: {

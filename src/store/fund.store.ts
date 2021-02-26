@@ -1,5 +1,5 @@
 import {action, observable} from "mobx";
-import {Fund, FundApi} from "../api/fund.api";
+import {Fund, FundApi} from "@/api/fund.api";
 
 export class FundStore {
   @observable
