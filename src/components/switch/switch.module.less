@@ -1,0 +1,54 @@
+@import "src/app.less";
+
+.switch {
+  display: block;
+  position: relative;
+  width: 42Px;
+  height: 22Px;
+  border: 1Px solid #dfdfdf;
+  outline: 0;
+  border-radius: 22Px;
+  box-sizing: border-box;
+  background-color: #dfdfdf;
+  transition: background-color 0.1s, border 0.1s;
+  //cursor: pointer;
+}
+
+.switch:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40Px;
+  height: 20Px;
+  border-radius: 20Px;
+  background-color: #fdfdfd;
+  transition: transform 0.35s cubic-bezier(0.45, 1, 0.4, 1);
+}
+
+.switch:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20Px;
+  height: 20Px;
+  border-radius: 20Px;
+  background-color: #ffffff;
+  box-shadow: 0 1Px 3Px rgba(0, 0, 0, 0.4);
+  transition: transform 0.35s cubic-bezier(0.4, 0.4, 0.25, 1.35);
+}
+
+.switch_on {
+  border-color: @primary-color;
+  background-color: @primary-color;
+}
+
+.switch_on:before {
+  border-color: @primary-color;
+  background-color: @primary-color;
+}
+
+.switch_on:after {
+  transform: translateX(20Px);
+}

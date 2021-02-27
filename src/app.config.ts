@@ -5,6 +5,7 @@ export default {
     'pages/login/index',
     'pages/home/search',
     'pages/home/searchResult',
+    'pages/push/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -25,7 +26,7 @@ export default {
         selectedIconPath: 'assets/tabbar/home-a.png'
       },
       {
-        pagePath: 'pages/index/index',
+        pagePath: 'pages/push/index',
         text: '推送',
         iconPath: 'assets/tabbar/push.png',
         selectedIconPath: 'assets/tabbar/push-a.png'

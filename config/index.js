@@ -54,7 +54,12 @@ const config = {
                     generateScopedName: '[local]_[hash:base64:5]'
                 }
             }
-        }
+        },
+        lessLoaderOption: {
+            strictMath: true,
+            noIeCompat: true,
+            paths: [path.resolve(__dirname, 'src')]
+        },
     },
     alias: {
         '@/components': path.resolve(__dirname, '..', 'src/components'),
@@ -63,6 +68,7 @@ const config = {
         '@/api': path.resolve(__dirname, '..', 'src/api'),
         '@/assets': path.resolve(__dirname, '..', 'src/assets'),
         '@/store': path.resolve(__dirname, '..', 'src/store'),
+        '@/src': path.resolve(__dirname, '..', 'src'),
     }
 }
 
