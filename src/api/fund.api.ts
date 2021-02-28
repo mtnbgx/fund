@@ -5,6 +5,13 @@ export interface Fund {
   name: string
   code: string
   type: string
+  PDATE: string;
+  NAV: string;
+  ACCNAV: string;
+  NAVCHGRT: string;
+  GSZ: string;
+  GSZZL: string;
+  GZTIME: string;
 }
 
 

@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
 import {View} from "@tarojs/components";
-import {Fund} from "../../../../api/fund.api";
+import {Fund} from "@/api/fund.api";
 import './fund.item.less'
 
 interface Props {
@@ -18,26 +18,27 @@ export function FundItem(props: Props) {
             return 'green'
         }
     }
+    const {fund} = props
     return <View className='fund-item-com'
-      onLongPress={() => props.onLongPress && props.onLongPress(props.fund)}
-      onClick={() => props.onClick && props.onClick(props.fund)}
+                 onLongPress={() => props.onLongPress && props.onLongPress(fund)}
+                 onClick={() => props.onClick && props.onClick(fund)}
     >
         <View className='col'>
             <View className='name'>
-                {props.fund.name}
+                {fund.name}
             </View>
-            <View className='code'>{props.fund.code}</View>
+            <View className='code'>{fund.code}</View>
         </View>
         <View className='col right'>
             <View className='jz show-col'>
-                <View className='price'>2.2214</View>
-                <View className='zf' style={{'color': zfColor('4.44')}}>4.44%</View>
-                <View className='date'>02-22</View>
+                <View className='price'>{fund.NAV}</View>
+                <View className='zf' style={{'color': zfColor(fund.NAVCHGRT)}}>{fund.NAVCHGRT}%</View>
+                <View className='date'>{fund.PDATE.substring(5,fund.PDATE.length)}</View>
             </View>
             {
                 props.action ? props.action(props.fund) : <View className='gz show-col'>
-                    <View className='price'>2.2214</View>
-                    <View className='zf' style={{'color': zfColor('-4.44')}}>-4.44%</View>
+                    <View className='price'>{fund.GSZ}</View>
+                    <View className='zf' style={{'color': zfColor(fund.GSZZL)}}>{fund.GSZZL}%</View>
                 </View>
             }
         </View>

@@ -64,7 +64,7 @@ export function Setting() {
                         if (values.email && values.email.length > 0) {
                             onChange({name: 'push', value: value})
                         } else {
-                            Taro.showToast({title: '没设置邮箱', icon: 'none'})
+                            Taro.showToast({title: '请先设置邮箱', icon: 'none'})
                         }
                     }}
                     />
