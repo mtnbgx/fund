@@ -53,12 +53,12 @@ export function UpdateMonitor(props: Props) {
             <View className='code'>{props.monitor.fund.code}</View>
             <Cell title='估算收益升至'>
                 <Input name='up' type='number' placeholder='请输入数字' value={values.up}
-                       onInput={onInput}
+                       onBlur={onInput}
                 />
             </Cell>
             <Cell title='估算收益降至'>
                 <Input name='down' type='number' placeholder='请输入数字' value={values.down}
-                       onInput={onInput}
+                       onBlur={onInput}
                 />
             </Cell>
             <CButton size='mini' className='submit' onClick={handleSubmit(submit)}>保存</CButton>
