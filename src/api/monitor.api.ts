@@ -17,7 +17,7 @@ export interface Monitor {
 export class MonitorApi {
 
     static async list() {
-        return request<Monitor>({url: '/api/monitor/list'})
+        return request<Monitor[]>({url: '/api/monitor/list'})
     }
 
     static async addMonitor(data: AddMonitor) {

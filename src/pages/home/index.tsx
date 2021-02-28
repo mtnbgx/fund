@@ -6,6 +6,7 @@ import {Fund} from "@/api/fund.api";
 import {tinyHelp} from '@/utils/tinyHelp';
 import {Monitor, MonitorApi} from '@/api/monitor.api';
 import {UpdateMonitor} from '@/pages/home/components/addFund/updateMonitor';
+import dayjs from 'dayjs';
 import {FundItem} from './components/fundItem/fund.item';
 import './index.less'
 
@@ -13,7 +14,9 @@ import './index.less'
 interface Index {
     state: {
         list: Monitor[],
-        form: { visible: boolean, monitor: Monitor }
+        form: { visible: boolean, monitor: Monitor },
+        maxjzrq: string
+        maxgzrq: string
     }
 }
 
@@ -23,24 +26,35 @@ class Index extends Component {
         this.state = {
             list: [],
             // @ts-ignore
-            form: {visible: false}
+            form: {visible: false},
         }
     }
 
     async componentDidShow() {
         let res = await MonitorApi.list()
         if (res.success) {
-            this.setState({
-                list: res.data
+            let maxjzrq = ''
+            let maxgzrq = ''
+            res.data.map((m, i) => {
+                const jzrq = m.fund.PDATE
+                const gzrq = m.fund.GZTIME.substring(0, 10)
+                if (i === 0) {
+                    maxjzrq = jzrq
+                    maxgzrq = gzrq
+                    return
+                }
+                if (dayjs(jzrq).isAfter(maxjzrq)) {
+                    maxjzrq = jzrq
+                }
+                if (dayjs(gzrq).isAfter(maxgzrq)) {
+                    maxgzrq = gzrq
+                }
             })
-        }
-    }
-
-    zfColor(zf: string) {
-        if (parseInt(zf) > 0) {
-            return '#d81e06'
-        } else {
-            return 'green'
+            this.setState({
+                list: res.data,
+                maxjzrq: maxjzrq,
+                maxgzrq: maxgzrq
+            })
         }
     }
 
@@ -62,11 +76,11 @@ class Index extends Component {
                     <View className='col'>
                         <View className='jz show-col'>
                             <View className='name'>净值</View>
-                            <View className='date'>02-23</View>
+                            <View className='date'>{this.state.maxjzrq && this.state.maxjzrq.substring(5, 10)}</View>
                         </View>
                         <View className='gz show-col'>
                             <View className='name'>估值</View>
-                            <View className='date'>02-23</View>
+                            <View className='date'>{this.state.maxgzrq && this.state.maxgzrq.substring(5, 10)}</View>
                         </View>
                     </View>
                 </View>
@@ -74,7 +88,10 @@ class Index extends Component {
                     <View className='list'>
                         {
                             this.state.list.map(monitor => {
-                                return <FundItem fund={monitor.fund} key={monitor.id}
+                                return <FundItem key={monitor.id}
+                                                 fund={monitor.fund}
+                                                 maxjzrq={this.state.maxjzrq}
+                                                 maxgzrq={this.state.maxgzrq}
                                                  onLongPress={(fund) => this.longPress(fund, monitor)}
                                                  onClick={() => {
                                                      this.setState({form: {visible: true, monitor}})
