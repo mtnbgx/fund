@@ -27,6 +27,14 @@ export class MemberApi {
         })
     }
 
+    static async signup(data: LoginParam) {
+        return await request<{ access_token: string }, LoginParam>({
+            method: 'POST',
+            url: '/api/member/signup',
+            data
+        })
+    }
+
     static async setting(data: SettingDto) {
         return await request<Number>({
             method: 'POST',

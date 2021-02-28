@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {inject, observer} from "mobx-react";
-import {AppStore} from "@/store/app.store";
-import {Login} from '@/pages/login/components/login';
-
+import {Signup} from '@/pages/login/components/signup';
+import {AppStore} from '@/store/app.store';
+import {inject, observer} from 'mobx-react';
 
 type PageStateProps = {
     store: {
@@ -18,9 +17,7 @@ interface Index {
 @observer
 class Index extends Component {
     render() {
-        return (
-            <Login appStore={this.props.store.appStore} />
-        );
+        return <Signup appStore={this.props.store.appStore} />
     }
 }
 

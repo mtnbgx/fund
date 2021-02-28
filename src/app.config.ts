@@ -6,6 +6,7 @@ export default {
     'pages/home/search',
     'pages/home/searchResult',
     'pages/push/index',
+    'pages/login/signup',
   ],
   window: {
     backgroundTextStyle: 'light',
