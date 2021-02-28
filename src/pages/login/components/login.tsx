@@ -40,24 +40,22 @@ export function Login(props: Props) {
             <View className='title'>登录/注册 更精彩</View>
         </View>
         <View className='form'>
-            <View className='error'>{errors.username?.message}</View>
-            <Cell title='账号'>
+            <Cell title='账号' error={errors.username?.message}>
                 <Controller
                     name='username'
                     control={control}
                     defaultValue=''
-                    render={({onChange, value}) => <Input onInput={({detail}) => onChange(detail.value)}
+                    render={({onChange, value}) => <Input placeholder='请输入账号' onInput={({detail}) => onChange(detail.value)}
                                                           value={value}
                     />}
                 />
             </Cell>
-            <View className='error'>{errors.password?.message}</View>
-            <Cell title='密码'>
+            <Cell title='密码' error={errors.password?.message}>
                 <Controller
                     name='password'
                     control={control}
                     defaultValue=''
-                    render={({onChange, value}) => <Input password onInput={({detail}) => onChange(detail.value)}
+                    render={({onChange, value}) => <Input password placeholder='请输入密码' onInput={({detail}) => onChange(detail.value)}
                                                           value={value}
                     />}
                 />

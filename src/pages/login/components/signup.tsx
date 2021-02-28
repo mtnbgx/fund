@@ -35,33 +35,30 @@ export function Signup(props: Props) {
     }
     return <View className={styles.signup}>
         <View className={styles.title}>注册</View>
-        <View className={styles.error}>{errors.username?.message}</View>
-        <Cell title='账号'>
+        <Cell title='账号' error={errors.username?.message}>
             <Controller
                 name='username'
                 control={control}
                 defaultValue=''
-                render={({onChange, value}) => <Input onInput={({detail}) => onChange(detail.value)} value={value} />}
+                render={({onChange, value}) => <Input placeholder='请输入账号'  onInput={({detail}) => onChange(detail.value)} value={value} />}
             />
         </Cell>
-        <View className={styles.error}>{errors.password?.message}</View>
-        <Cell title='密码'>
+        <Cell title='密码' error={errors.password?.message}>
             <Controller
                 name='password'
                 control={control}
                 defaultValue=''
-                render={({onChange, value}) => <Input password onInput={({detail}) => onChange(detail.value)}
+                render={({onChange, value}) => <Input placeholder='请输入密码'  password onInput={({detail}) => onChange(detail.value)}
                                                       value={value}
                 />}
             />
         </Cell>
-        <View className={styles.error}>{errors.passwordConfirmation?.message}</View>
-        <Cell title='确认密码'>
+        <Cell title='确认密码' error={errors.passwordConfirmation?.message}>
             <Controller
                 name='passwordConfirmation'
                 control={control}
                 defaultValue=''
-                render={({onChange, value}) => <Input password onInput={({detail}) => onChange(detail.value)}
+                render={({onChange, value}) => <Input placeholder='请输入密码'  password onInput={({detail}) => onChange(detail.value)}
                                                       value={value}
                 />}
             />
