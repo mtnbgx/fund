@@ -1,14 +1,13 @@
 import React from "react";
-import {Input, View} from "@tarojs/components";
+import {View} from "@tarojs/components";
 import Taro from '@tarojs/taro'
-import {Rules} from 'async-validator';
 import {Dialog} from "@/components/dialog";
 import {CButton} from "@/components/cButton";
-import {Cell} from '@/components/cell';
-import {UseForm} from '@/components/useform/userForm';
 import {Monitor, MonitorApi} from '@/api/monitor.api';
+import {HInput} from '@/components/hForm/HInput';
+import {HForm} from '@/components/hForm';
+import * as yup from 'yup';
 import './index.less'
-
 
 interface Props {
     visible: boolean,
@@ -17,27 +16,16 @@ interface Props {
     refresh?: () => void
 }
 
+const schema = yup.object().shape({
+    up: yup.number().typeError('不能为空').min(0, '必须大于0'),
+    down: yup.number().typeError('不能为空').min(0, '必须大于0')
+});
+
+
 export function UpdateMonitor(props: Props) {
     if (!props.monitor) {
         return <View></View>
     }
-    console.log(props.monitor)
-    const descriptor: Rules = {
-        up: {
-            type: 'string',
-            required: true,
-            validator: (_, value) => value > 0,
-            message: 'up必须大于0',
-        },
-        down: {
-            type: 'string',
-            required: true,
-            validator: (_, value) => value > 0,
-            message: 'down必须大于0',
-        }
-    }
-    const {values, onInput, handleSubmit} = UseForm({up: props.monitor.up, down: props.monitor.down}, descriptor)
-
     const submit = async (vs) => {
         try {
             await MonitorApi.updateMonitor(props.monitor.id, vs)
@@ -47,21 +35,16 @@ export function UpdateMonitor(props: Props) {
             await Taro.showToast({title: '修改失败', icon: 'none'})
         }
     }
+    const {monitor} = props
     return <Dialog visible={props.visible} hide={props.hide} title='修改提醒'>
         <View className='add-fund-com'>
-            <View className='name'>{props.monitor.fund.name}</View>
-            <View className='code'>{props.monitor.fund.code}</View>
-            <Cell title='估算收益升至'>
-                <Input name='up' type='number' placeholder='请输入数字' value={values.up}
-                       onBlur={onInput}
-                />
-            </Cell>
-            <Cell title='估算收益降至'>
-                <Input name='down' type='number' placeholder='请输入数字' value={values.down}
-                       onBlur={onInput}
-                />
-            </Cell>
-            <CButton size='mini' className='submit' onClick={handleSubmit(submit)}>保存</CButton>
+            <View className='name'>{monitor.fund.name}</View>
+            <View className='code'>{monitor.fund.code}</View>
+            <HForm onSubmit={submit} schema={schema} defaultValues={{up: monitor.up, down: monitor.down}}>
+                <HInput name='up' title='估算收益升至' placeholder='请输入数字' />
+                <HInput name='down' title='估算收益降至' placeholder='请输入数字' />
+                <CButton size='mini' formType='submit' className='sub'>提交</CButton>
+            </HForm>
         </View>
     </Dialog>
 }

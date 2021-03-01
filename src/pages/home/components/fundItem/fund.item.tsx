@@ -14,7 +14,7 @@ interface Props {
 
 export function FundItem(props: Props) {
     const zfColor = (zf: string) => {
-        if (parseInt(zf) > 0) {
+        if (parseFloat(zf) > 0) {
             return '#d81e06'
         } else {
             return 'green'
