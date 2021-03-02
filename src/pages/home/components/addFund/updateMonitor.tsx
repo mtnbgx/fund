@@ -1,12 +1,11 @@
 import React from "react";
-import {View} from "@tarojs/components";
+import {Input, View} from "@tarojs/components";
 import Taro from '@tarojs/taro'
-import {Dialog} from "@/components/dialog";
 import {CButton} from "@/components/cButton";
+import {Dialog} from "@/components/dialog";
 import {Monitor, MonitorApi} from '@/api/monitor.api';
-import {HInput} from '@/components/hForm/HInput';
-import {HForm} from '@/components/hForm';
-import * as yup from 'yup';
+import {UseForm} from '@/components/useform/userForm';
+import {Cell} from '@/components/cell';
 import './index.less'
 
 interface Props {
@@ -16,16 +15,17 @@ interface Props {
     refresh?: () => void
 }
 
-const schema = yup.object().shape({
-    up: yup.number().typeError('不能为空').min(0, '必须大于0'),
-    down: yup.number().typeError('不能为空').min(0, '必须大于0')
-});
-
 
 export function UpdateMonitor(props: Props) {
     if (!props.monitor) {
-        return <View></View>
+        return <View />
     }
+
+    let {formData, injectInput, handleSubmit, errors} = UseForm({
+        up: props.monitor.up,
+        down: props.monitor.down
+    })
+
     const submit = async (vs) => {
         try {
             await MonitorApi.updateMonitor(props.monitor.id, vs)
@@ -40,11 +40,13 @@ export function UpdateMonitor(props: Props) {
         <View className='add-fund-com'>
             <View className='name'>{monitor.fund.name}</View>
             <View className='code'>{monitor.fund.code}</View>
-            <HForm onSubmit={submit} schema={schema} defaultValues={{up: monitor.up, down: monitor.down}}>
-                <HInput name='up' title='估算收益升至' placeholder='请输入数字' />
-                <HInput name='down' title='估算收益降至' placeholder='请输入数字' />
-                <CButton size='mini' formType='submit' className='sub'>提交</CButton>
-            </HForm>
+            <Cell title='估算收益升至' error={errors.up}>
+                <Input value={formData.up} onInput={injectInput('up')} placeholder='请输入数字' />
+            </Cell>
+            <Cell title='估算收益降至' error={errors.up}>
+                <Input value={formData.down} onInput={injectInput('down')} placeholder='请输入数字' />
+            </Cell>
+            <CButton size='mini' onClick={handleSubmit(submit)} className='sub'>提交</CButton>
         </View>
     </Dialog>
 }

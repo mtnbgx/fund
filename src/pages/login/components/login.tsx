@@ -1,30 +1,35 @@
 import React from 'react';
-import {View} from '@tarojs/components';
+import {Input, View} from '@tarojs/components';
 import {CButton} from '@/components/cButton';
 import Taro from '@tarojs/taro';
-import * as yup from 'yup';
 import {AppStore} from '@/store/app.store';
-import { HForm } from '@/components/hForm';
-import {HInput} from '@/components/hForm/HInput';
+import {UseForm} from '@/components/useform/userForm';
+import {Cell} from '@/components/cell';
 import './login.less'
-
-type FormData = {
-    username: string;
-    password: string;
-};
-
-const schema = yup.object().shape({
-    username: yup.string().min(4).required(),
-    password: yup.string().min(4).required(),
-});
 
 interface Props {
     appStore: AppStore
 }
 
+const schema = {
+    username: {
+        type: 'string',
+        required: true,
+    },
+    password: {
+        type: 'string',
+        required: true
+    }
+}
+
 export function Login(props: Props) {
 
-    const onSubmit = (data: FormData) => {
+    let {formData, injectInput, handleSubmit, errors} = UseForm({
+        username: '',
+        password: ''
+    }, schema)
+
+    const onSubmit = (data) => {
         props.appStore.login(data)
     }
 
@@ -33,11 +38,13 @@ export function Login(props: Props) {
             <View className='title'>登录/注册 更精彩</View>
         </View>
         <View className='form'>
-            <HForm<FormData> onSubmit={onSubmit} schema={schema}>
-                <HInput name='username' title='账号' placeholder='请输入账号' />
-                <HInput name='password' title='密码' placeholder='请输入密码' password />
-                <CButton formType='submit' className='sub'>提交</CButton>
-            </HForm>
+            <Cell title='账号' error={errors.username}>
+                <Input value={formData.username} onInput={injectInput('username')} />
+            </Cell>
+            <Cell title='密码' error={errors.password}>
+                <Input value={formData.password} password onInput={injectInput('password')} />
+            </Cell>
+            <CButton onClick={handleSubmit(onSubmit)} className='sub'>提交</CButton>
             <View className='row'>
                 <View className='reg' onClick={() => Taro.navigateTo({url: '/pages/login/signup'})}>注册账号</View>
             </View>

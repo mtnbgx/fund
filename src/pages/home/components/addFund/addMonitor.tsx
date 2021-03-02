@@ -1,20 +1,15 @@
 import React from "react";
-import {View} from "@tarojs/components";
+import {Input, View} from "@tarojs/components";
 import Taro from '@tarojs/taro'
 import {Dialog} from "@/components/dialog";
 import {CButton} from "@/components/cButton";
 import {Fund} from "@/api/fund.api";
 import {MonitorApi} from '@/api/monitor.api';
-import * as yup from 'yup';
-import {HInput} from '@/components/hForm/HInput';
-import {HForm} from '@/components/hForm';
+import {UseForm} from '@/components/useform/userForm';
+import {Cell} from '@/components/cell';
 import './index.less'
 
 
-const schema = yup.object().shape({
-    up: yup.number().typeError('不能为空').min(0, '必须大于0'),
-    down: yup.number().typeError('不能为空').min(0, '必须大于0')
-});
 
 interface Props {
     visible: boolean,
@@ -23,6 +18,12 @@ interface Props {
 }
 
 export function AddFund(props: Props) {
+
+    let {formData, injectInput, handleSubmit, errors} = UseForm({
+        up: '1',
+        down: '1'
+    })
+
     const submit = async (vs) => {
         try {
             await MonitorApi.addMonitor({...vs, fundId: props.fund?.id})
@@ -35,11 +36,13 @@ export function AddFund(props: Props) {
         <View className='add-fund-com'>
             <View className='name'>{props.fund?.name}</View>
             <View className='code'>{props.fund?.code}</View>
-            <HForm onSubmit={submit} schema={schema} defaultValues={{up: 1, down: 1}}>
-                <HInput name='up' title='估算收益升至' placeholder='请输入数字' />
-                <HInput name='down' title='估算收益降至' placeholder='请输入数字' />
-                <CButton size='mini' formType='submit' className='sub'>提交</CButton>
-            </HForm>
+            <Cell title='估算收益升至' error={errors.up}>
+                <Input value={formData.up} onInput={injectInput('up')} placeholder='请输入数字' />
+            </Cell>
+            <Cell title='估算收益降至' error={errors.down}>
+                <Input value={formData.down} onInput={injectInput('down')} placeholder='请输入数字' />
+            </Cell>
+            <CButton size='mini' onClick={handleSubmit(submit)} className='sub'>提交</CButton>
         </View>
     </Dialog>
 }

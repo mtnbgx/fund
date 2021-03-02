@@ -1,34 +1,46 @@
 import {useState} from 'react';
-import Schema, {Rules} from 'async-validator';
+import Schema from 'async-validator';
 
-export function UseForm<T extends { [key: string]: any }, K extends keyof T>(
-    initialData: T,
-    schema?: Rules,
-    cl?: (vs: T, setValue: (name: string, value: string) => void) => void
-) {
-    const [formData, setFormData] = useState<T>(initialData);
+
+const set = (obj, path, value) => {
+    if (Object(obj) !== obj) return obj; // When obj is not an object
+    // If not yet an array, get the keys from the string-path
+    if (!Array.isArray(path)) path = path.toString().match(/[^.[\]]+/g) || [];
+    path.slice(0, -1).reduce((a, c, i) => // Iterate all of them except the last one
+            Object(a[c]) === a[c] // Does the key exist and is its value an object?
+                // Yes: then follow that path
+                ? a[c]
+                // No: create the key. Is the next key a potential array-index?
+                : a[c] = Math.abs(path[i + 1]) >> 0 === +path[i + 1]
+                ? [] // Yes: assign a new array object
+                : {}, // No: assign a new plain object
+        obj)[path[path.length - 1]] = value; // Finally assign the value to the last key
+    return obj; // Return the top-level object to allow chaining
+};
+
+export function UseForm<T extends { [key: string]: any }, K extends keyof T>(initialData: T, schema?: any) {
+    const [formData, setFormData] = useState<T>(initialData)
     // @ts-ignore
-    const [error, setError] = useState<{ [key in keyof T]: string }>({});
-    const setValue = (name: string, value: any, isCl = false) => {
-        // @ts-ignore
+    const [errors, setErrors] = useState<{ [key in K]: string }>({});
+    const setValue = (name: K, value: any) => {
+        setFormData(d => ({...d, [name]: value}))
+    }
+
+    //支持对象数组 例子“a.[2].c”
+    const setDeepValue = (name: string, value: any) => {
         setFormData(d => {
-            if (isCl && cl) {
-                cl({...d, [name]: value}, setValue)
-            }
-            return {...d, [name]: value}
-        });
+            set(d, name, value)
+            return d
+        })
     }
-    const setValues = (vs: T) => {
-        setFormData(vs)
+    //具名input
+    const injectInput = (name: K) => {
+        return (e) => setValue(name, e.detail.value)
     }
-    //通用组件修改方法
-    const onChange = (event: { name: string, value: any }) => {
-        setValue(event.name, event.value, true)
-    };
-    //input组件修改方法
-    const onInput = event => {
-        setValue(event.target.name, event.target.value, true)
-    };
+    //具名change
+    const injectChange = (name: K) => {
+        return (v) => setValue(name, v)
+    }
     let validator: Schema
     if (schema) {
         validator = new Schema(schema);
@@ -41,21 +53,17 @@ export function UseForm<T extends { [key: string]: any }, K extends keyof T>(
                     .then(() => {
                         fn(formData)
                     })
-                    .catch(({errors}) => {
+                    .catch((e) => {
                         let ojb: any = {}
-                        errors.map(err => {
+                        e.errors.map(err => {
                             ojb[err.field] = err.message
                         })
-                        setError(ojb)
+                        setErrors(ojb)
                     });
             } else {
                 fn(formData)
             }
         }
     }
-    //获取error方法
-    const getError = function (name: K) {
-        return error[name]
-    }
-    return {values: formData as T, onChange, onInput, handleSubmit, getError, setValues}
+    return {formData, setValue, errors, handleSubmit, injectInput, injectChange, setDeepValue, setFormData}
 }

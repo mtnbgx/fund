@@ -1,42 +1,56 @@
 import React from 'react';
-import { View} from '@tarojs/components';
+import {Input, View} from '@tarojs/components';
 import {CButton} from '@/components/cButton';
-import * as yup from "yup";
 import Taro from '@tarojs/taro';
 import {AppStore} from '@/store/app.store';
-import { HForm } from '@/components/hForm';
-import { HInput } from '@/components/hForm/HInput';
+import {UseForm} from '@/components/useform/userForm';
+import {Cell} from '@/components/cell';
 import styles from './signup.module.less'
 
-
-const schema = yup.object().shape({
-    username: yup.string().min(5).required(),
-    password: yup.string().min(5).required(),
-    passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-});
-
-type FormData = {
-    username: string;
-    password: string;
-    passwordConfirmation: string;
-};
 
 interface Props {
     appStore: AppStore
 }
 
+const schema = {
+    username: {
+        type: 'string',
+        required: true,
+    },
+    password: {
+        type: 'string',
+        required: true
+    },
+    passwordConfirmation: {
+        type: 'string',
+        required: true
+    },
+}
+
 export function Signup(props: Props) {
+
+    let {formData, injectInput, handleSubmit, errors} = UseForm({
+        username: '',
+        password: '',
+        passwordConfirmation: ''
+    }, schema)
+
+
     const onSubmit = data => {
         props.appStore.signup(data)
     }
     return <View className={styles.signup}>
         <View className={styles.title}>注册</View>
-        <HForm<FormData> onSubmit={onSubmit} schema={schema}>
-            <HInput name='username' title='账号' placeholder='请输入账号' />
-            <HInput name='password' title='密码' placeholder='请输入密码' password />
-            <HInput name='passwordConfirmation' title='确认密码' placeholder='请输入密码' password />
-            <CButton formType='submit' className={styles.btn}>提交</CButton>
-        </HForm>
+        <Cell title='账号' error={errors.username}>
+            <Input value={formData.username} onInput={injectInput('username')} />
+        </Cell>
+        <Cell title='密码' error={errors.password}>
+            <Input value={formData.password} password onInput={injectInput('password')} />
+        </Cell>
+        <Cell title='确认密码' error={errors.passwordConfirmation}>
+            <Input value={formData.passwordConfirmation} password onInput={injectInput('passwordConfirmation')} />
+        </Cell>
+        <CButton onClick={handleSubmit(onSubmit)}>提交</CButton>
         <View className='row'>
             <View className={styles.login} onClick={() => Taro.navigateTo({url: '/pages/login/index'})}>登录</View>
         </View>
