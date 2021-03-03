@@ -10,7 +10,8 @@ export const tinyHelp = {
             Taro.showActionSheet({
                 itemList,
                 success: function (res) {
-                    resolve(res.tapIndex)
+                    // @ts-ignore
+                    resolve(res.tapIndex ? res.tapIndex : res.index)
                 },
                 fail: function () {
                     resolve(-1)
@@ -19,5 +20,12 @@ export const tinyHelp = {
                 resolve(-1)
             })
         }))
+    },
+    fullPageHeight() {
+        if (process.env.TARO_ENV === 'h5') {
+            return 'height: calc(100vh - 50Px);'
+        } else {
+            return 'height: 100vh;'
+        }
     }
 }

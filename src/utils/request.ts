@@ -5,7 +5,7 @@ import {appStore} from "@/store/app.store";
 export async function request<T = any, U = any>(option: Taro.request.Option<U>): Promise<R<T>> {
     let baseUrl = ''
     if (process.env.TARO_ENV !== 'h5') {
-        baseUrl = 'https://fund.frp.niannianmao.com'
+        baseUrl = 'https://fund.niannianmao.com'
     }
     const res = await Taro.request({
         ...option,

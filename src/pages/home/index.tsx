@@ -70,7 +70,7 @@ class Index extends Component {
 
     render() {
         return (
-            <View className='home-page'>
+            <View className='home-page' style={tinyHelp.fullPageHeight()}>
                 <View className='header'>
                     <View className='title'>基金名称</View>
                     <View className='col'>

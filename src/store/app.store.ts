@@ -25,7 +25,7 @@ export class AppStore {
         let res = await MemberApi.login(data)
         if (res.success) {
             this.setAuth({access_token: res.data.access_token, time: new Date().getTime() + 36000})
-            await Taro.redirectTo({url: '/pages/home/index'})
+            await Taro.reLaunch({url: '/pages/home/index'})
             await Taro.showToast({title: '登录成功'})
         } else {
             await Taro.showToast({title: '登录失败', icon: 'success'})
@@ -37,7 +37,7 @@ export class AppStore {
         let res = await MemberApi.signup(data)
         if (res.success) {
             this.setAuth({access_token: res.data.access_token, time: new Date().getTime() + 36000})
-            await Taro.redirectTo({url: '/pages/home/index'})
+            await Taro.reLaunch({url: '/pages/home/index'})
             await Taro.showToast({title: '注册成功，进入'})
         } else {
             await Taro.showToast({title: '注册失败', icon: 'success'})

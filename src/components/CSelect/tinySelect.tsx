@@ -19,6 +19,7 @@ export function TinySelect(props: Props) {
     const onClick = async () => {
         try {
             const index = await tinyHelp.showActionSheet(labels)
+            console.log('TinySelect',index)
             if (index >= 0) {
                 props.onChange && props.onChange(props.options[index].value)
             }

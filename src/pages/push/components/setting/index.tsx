@@ -7,6 +7,7 @@ import CSwitch from '@/components/switch/cSwitch';
 import {CButton} from '@/components/cButton';
 import {UseForm} from '@/components/useform/userForm';
 import {TinySelect} from '@/components/CSelect/tinySelect';
+import {tinyHelp} from '@/utils/tinyHelp';
 import './index.less'
 
 const schema = {
@@ -68,7 +69,7 @@ export function Setting() {
     ]
 
     return (
-        <View className='setting-com'>
+        <View className='setting-com' style={tinyHelp.fullPageHeight()}>
             <View className='title'>推送设置</View>
             <View className='body'>
                 <Cell title='邮箱' error={errors.email}>
