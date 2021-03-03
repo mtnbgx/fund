@@ -7,7 +7,7 @@ interface Props {
     onChange?: (value: any) => void
 }
 
-export function CSelect({options, value, onChange}: Props) {
+function Index({options, value, onChange}: Props) {
     const labels = options.map(o => o.label)
     let label = '请选择'
     options.map(o => {
@@ -15,6 +15,7 @@ export function CSelect({options, value, onChange}: Props) {
             label = o.label
         }
     })
+    console.log(label, labels, options)
     return <Picker mode='selector' range={labels}
                    onChange={({detail}) => {
                        if (onChange) {
@@ -27,3 +28,10 @@ export function CSelect({options, value, onChange}: Props) {
         </View>
     </Picker>
 }
+
+function areEqual(prevProps, nextProps) {
+    return prevProps.value === nextProps.value
+}
+
+
+export const CSelect = React.memo(Index, areEqual)

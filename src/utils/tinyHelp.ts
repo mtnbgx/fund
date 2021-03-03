@@ -15,6 +15,8 @@ export const tinyHelp = {
                 fail: function () {
                     resolve(-1)
                 }
+            }).catch(() => {
+                resolve(-1)
             })
         }))
     }

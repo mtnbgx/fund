@@ -6,7 +6,7 @@ import {Cell} from '@/components/cell';
 import CSwitch from '@/components/switch/cSwitch';
 import {CButton} from '@/components/cButton';
 import {UseForm} from '@/components/useform/userForm';
-import { CSelect } from '@/components/CSelect';
+import {TinySelect} from '@/components/CSelect/tinySelect';
 import './index.less'
 
 const schema = {
@@ -78,7 +78,7 @@ export function Setting() {
                     <CSwitch value={formData.push} onChange={injectChange('push')} />
                 </Cell>}
                 <Cell title='推送时间' error={errors.time}>
-                    <CSelect options={options} value={formData.time} onChange={injectChange('time')} />
+                    <TinySelect options={options} value={formData.time} onChange={injectChange('time')} />
                 </Cell>
             </View>
             <View className='action'>
