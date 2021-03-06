@@ -27,6 +27,12 @@ export class MemberApi {
         })
     }
 
+    static async wxLogin(code: string) {
+        return await request<{ access_token: string }, LoginParam>({
+            url: `/api/member/wxLogin?code=${code}`,
+        })
+    }
+
     static async signup(data: LoginParam) {
         return await request<{ access_token: string }, LoginParam>({
             method: 'POST',

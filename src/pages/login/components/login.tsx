@@ -39,10 +39,10 @@ export function Login(props: Props) {
         </View>
         <View className='form'>
             <Cell title='账号' error={errors.username}>
-                <Input value={formData.username} onInput={injectInput('username')} />
+                <Input value={formData.username} onInput={injectInput('username')} placeholder='请输入账号' />
             </Cell>
             <Cell title='密码' error={errors.password}>
-                <Input value={formData.password} password onInput={injectInput('password')} />
+                <Input value={formData.password} password onInput={injectInput('password')} placeholder='请输入密码' />
             </Cell>
             <CButton onClick={handleSubmit(onSubmit)} className='sub'>提交</CButton>
             <View className='row'>

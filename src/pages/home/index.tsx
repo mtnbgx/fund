@@ -102,9 +102,11 @@ class Index extends Component {
                     </View>
                     <View className='plus' onClick={() => Taro.navigateTo({url: '/pages/home/search'})}>
                         <Image src={PlusIcon} className='plus-icon' />
-                        添加自选
+                        添加
                     </View>
-                    <View className='ps'>最新估值根据基金持仓和指数走势估算，仅供参考，实际涨跌幅以基金公司披露为准。</View>
+                    <View
+                        className='ps'
+                    >{this.state.list.length === 0 ? '您还没有添加基金，添加一个试试吧' : '最新估值根据基金持仓和指数走势估算，仅供参考，实际涨跌幅以基金公司披露为准。'}</View>
                 </View>
                 <UpdateMonitor visible={this.state.form.visible} hide={() => {
                     this.setState({form: {visible: false}})

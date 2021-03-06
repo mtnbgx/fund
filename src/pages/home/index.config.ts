@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '禅基'
+  navigationBarTitleText: '养鸡计划'
 }

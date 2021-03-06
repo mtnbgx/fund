@@ -30,9 +30,11 @@ class Index extends Component {
 
   render() {
     return <View className='search-page'>
-      <Input placeholder='输入基金代码或者基金名称' autoFocus focus
-        onConfirm={this.confirm}
-      />
+      <View className='center'>
+        <Input className='input' placeholder='输入基金代码或者基金名称' autoFocus focus
+               onConfirm={this.confirm}
+        />
+      </View>
     </View>;
   }
 }

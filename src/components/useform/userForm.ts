@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import Schema from 'async-validator';
 
-
 const set = (obj, path, value) => {
     if (Object(obj) !== obj) return obj; // When obj is not an object
     // If not yet an array, get the keys from the string-path
@@ -41,6 +40,7 @@ export function UseForm<T extends { [key: string]: any }, K extends keyof T>(ini
     const injectChange = (name: K) => {
         return (v) => setValue(name, v)
     }
+
     let validator: Schema
     if (schema) {
         validator = new Schema(schema);
@@ -48,18 +48,30 @@ export function UseForm<T extends { [key: string]: any }, K extends keyof T>(ini
     //验证数据
     const handleSubmit = (fn: (data: T) => void) => {
         return function () {
-            if (validator) {
-                validator.validate(formData)
-                    .then(() => {
-                        fn(formData)
-                    })
-                    .catch((e) => {
+            if (schema) {
+                validator.validate(formData, {}, function (err) {
+                    if (err) {
                         let ojb: any = {}
-                        e.errors.map(err => {
-                            ojb[err.field] = err.message
+                        err.map(error => {
+                            ojb[error.field] = error.message
                         })
                         setErrors(ojb)
-                    });
+                        return
+                    }
+                    fn(formData)
+                })
+                // validator.validate(formData)
+                //     .then(() => {
+                //         fn(formData)
+                //     })
+                //     .catch((e) => {
+                //         let ojb: any = {}
+                //         console.log(e)
+                //         e.errors.map(err => {
+                //             ojb[err.field] = err.message
+                //         })
+                //         setErrors(ojb)
+                //     });
             } else {
                 fn(formData)
             }

@@ -18,7 +18,7 @@ export default {
     color: '#bfbfbf',
     selectedColor: '#d81e06',
     backgroundColor: '#fff',
-    borderStyle: '#F7F7F7',
+    borderStyle: 'white',
     list: [
       {
         pagePath: 'pages/home/index',

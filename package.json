@@ -45,7 +45,8 @@
     "mobx": "^5.15.7",
     "mobx-react": "^6.1.4",
     "react": "^16.10.0",
-    "react-dom": "^16.10.0"
+    "react-dom": "^16.10.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",

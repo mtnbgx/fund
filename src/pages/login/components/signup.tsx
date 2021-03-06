@@ -12,6 +12,7 @@ interface Props {
     appStore: AppStore
 }
 
+
 const schema = {
     username: {
         type: 'string',
@@ -23,7 +24,7 @@ const schema = {
     },
     passwordConfirmation: {
         type: 'string',
-        required: true
+        required: true,
     },
 }
 
@@ -42,13 +43,15 @@ export function Signup(props: Props) {
     return <View className={styles.signup}>
         <View className={styles.title}>注册</View>
         <Cell title='账号' error={errors.username}>
-            <Input value={formData.username} onInput={injectInput('username')} />
+            <Input value={formData.username} onInput={injectInput('username')} placeholder='请输入账号' />
         </Cell>
         <Cell title='密码' error={errors.password}>
-            <Input value={formData.password} password onInput={injectInput('password')} />
+            <Input value={formData.password} password onInput={injectInput('password')} placeholder='请输入密码' />
         </Cell>
         <Cell title='确认密码' error={errors.passwordConfirmation}>
-            <Input value={formData.passwordConfirmation} password onInput={injectInput('passwordConfirmation')} />
+            <Input value={formData.passwordConfirmation} password onInput={injectInput('passwordConfirmation')}
+                   placeholder='请再输入密码'
+            />
         </Cell>
         <CButton onClick={handleSubmit(onSubmit)}>提交</CButton>
         <View className='row'>

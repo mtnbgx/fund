@@ -6,6 +6,9 @@ export async function request<T = any, U = any>(option: Taro.request.Option<U>):
     let baseUrl = ''
     if (process.env.TARO_ENV !== 'h5') {
         baseUrl = 'https://fund.niannianmao.com'
+        if (process.env.NODE_ENV === 'development') {
+            baseUrl = 'http://localhost:3000'
+        }
     }
     const res = await Taro.request({
         ...option,
@@ -14,7 +17,11 @@ export async function request<T = any, U = any>(option: Taro.request.Option<U>):
     })
     if (!res.data.success) {
         if (res.data.errorCode === '403') {
-            await Taro.navigateTo({url: '/pages/login/index'})
+            if (process.env.TARO_ENV === 'weapp') {
+                appStore.wxLogin()
+            } else {
+                await Taro.navigateTo({url: '/pages/login/index'})
+            }
         }
     }
     return res.data

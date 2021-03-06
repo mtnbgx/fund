@@ -27,5 +27,19 @@ export const tinyHelp = {
         } else {
             return 'height: 100vh;'
         }
+    },
+    login(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            Taro.login({
+                success: function (res) {
+                    if (res.code) {
+                        resolve(res.code)
+                    } else {
+                        console.log('登录失败！' + res.errMsg)
+                        reject(res.errMsg)
+                    }
+                }
+            })
+        })
     }
 }
