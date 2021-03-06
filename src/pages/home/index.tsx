@@ -9,8 +9,9 @@ import {UpdateMonitor} from '@/pages/home/components/addFund/updateMonitor';
 import dayjs from 'dayjs';
 import {NoticeBar} from '@/components/noticebar';
 import {Loading} from '@/components/loading';
-import {FundItem} from './components/fundItem/fund.item';
+import {MemberApi} from '@/api/member.api';
 import './index.less'
+import {FundItem} from './components/fundItem/fund.item';
 
 
 interface Index {
@@ -19,9 +20,11 @@ interface Index {
         loading: boolean,
         form: { visible: boolean, monitor: Monitor },
         maxjzrq: string
-        maxgzrq: string
+        maxgzrq: string,
+        openPush: boolean
     }
 }
+
 
 class Index extends Component {
     constructor(props: any) {
@@ -30,11 +33,17 @@ class Index extends Component {
             list: [],
             // @ts-ignore
             form: {visible: false},
-            loading: true
+            loading: true,
+            openPush: true
         }
     }
 
     async componentDidShow() {
+        this.list()
+    }
+
+    //获取列表
+    async list() {
         let res = await MonitorApi.list()
         if (res.success) {
             let maxjzrq = ''
@@ -60,9 +69,20 @@ class Index extends Component {
                 maxgzrq: maxgzrq,
                 loading: false
             })
+            this.getGetting()
         }
     }
 
+    async getGetting() {
+        let res = await MemberApi.getSetting()
+        if (!res.data.push) {
+            this.setState({
+                openPush: false
+            })
+        }
+    }
+
+    //删除功能
     longPress = async (fund: Fund, monitor: Monitor) => {
         const index = await tinyHelp.showActionSheet([`删除 ${fund.name}`])
         if (index === 0) {
@@ -77,7 +97,7 @@ class Index extends Component {
         return (
             <View className='home-page' style={tinyHelp.fullPageHeight()}>
                 {
-                    this.state.list.length > 0 && <NoticeBar
+                    this.state.list.length > 0 && !this.state.openPush && <NoticeBar
                         onClick={() => Taro.switchTab({url: "/pages/push/index"})}
                     >您还未开启推送，开启后交易日15点前会收到涨幅提醒</NoticeBar>
                 }
