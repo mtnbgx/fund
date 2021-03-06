@@ -7,6 +7,8 @@ import {tinyHelp} from '@/utils/tinyHelp';
 import {Monitor, MonitorApi} from '@/api/monitor.api';
 import {UpdateMonitor} from '@/pages/home/components/addFund/updateMonitor';
 import dayjs from 'dayjs';
+import {NoticeBar} from '@/components/noticebar';
+import {Loading} from '@/components/loading';
 import {FundItem} from './components/fundItem/fund.item';
 import './index.less'
 
@@ -14,6 +16,7 @@ import './index.less'
 interface Index {
     state: {
         list: Monitor[],
+        loading: boolean,
         form: { visible: boolean, monitor: Monitor },
         maxjzrq: string
         maxgzrq: string
@@ -27,6 +30,7 @@ class Index extends Component {
             list: [],
             // @ts-ignore
             form: {visible: false},
+            loading: true
         }
     }
 
@@ -53,7 +57,8 @@ class Index extends Component {
             this.setState({
                 list: res.data,
                 maxjzrq: maxjzrq,
-                maxgzrq: maxgzrq
+                maxgzrq: maxgzrq,
+                loading: false
             })
         }
     }
@@ -71,6 +76,11 @@ class Index extends Component {
     render() {
         return (
             <View className='home-page' style={tinyHelp.fullPageHeight()}>
+                {
+                    this.state.list.length > 0 && <NoticeBar
+                        onClick={() => Taro.switchTab({url: "/pages/push/index"})}
+                    >您还未开启推送，开启后交易日15点前会收到涨幅提醒</NoticeBar>
+                }
                 <View className='header'>
                     <View className='title'>基金名称</View>
                     <View className='col'>
@@ -112,6 +122,7 @@ class Index extends Component {
                     this.setState({form: {visible: false}})
                 }} monitor={this.state.form.monitor} refresh={() => this.componentDidShow()}
                 />
+                <Loading show={this.state.loading} />
             </View>
         );
     }
