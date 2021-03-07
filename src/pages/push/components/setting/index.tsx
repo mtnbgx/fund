@@ -43,25 +43,28 @@ export function Setting() {
     }
 
 
-    let {formData, injectInput, injectChange, handleSubmit, errors, setValue} = UseForm({
+    let {formData, injectInput, injectChange, handleSubmit, errors, setFormData} = UseForm({
         email: '',
         time: '',
         push: false
-    },schema)
+    }, schema)
 
 
     useEffect(() => {
-        const getSetting = async () => {
-            let res = await MemberApi.getSetting()
-            if (res.success) {
-                console.log(res.data)
-                setValue('email', res.data.email)
-                setValue('push', res.data.push)
-                setValue('time', res.data.time)
+            const getSetting = async () => {
+                let res = await MemberApi.getSetting()
+                if (res.success) {
+                    console.log(res.data)
+                    setFormData({
+                        email: res.data.email,
+                        push: res.data.push,
+                        time: res.data.time
+                    })
+                }
             }
-        }
-        getSetting()
-    }, [])
+            getSetting()
+        },
+        [setFormData])
 
     let options = [
         {label: '14:10', value: '14:10:00'},
@@ -73,7 +76,7 @@ export function Setting() {
             <View className='title'>推送设置</View>
             <View className='body'>
                 <Cell title='邮箱' error={errors.email}>
-                    <Input value={formData.email} onInput={injectInput('email')} />
+                    <Input placeholder='请输入邮箱' value={formData.email} onInput={injectInput('email')} />
                 </Cell>
                 {formData.email && <Cell title='推送' error={errors.push}>
                     <CSwitch value={formData.push} onChange={injectChange('push')} />

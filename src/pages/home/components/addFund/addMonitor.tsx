@@ -10,7 +10,6 @@ import {Cell} from '@/components/cell';
 import './index.less'
 
 
-
 interface Props {
     visible: boolean,
     hide: () => void,
@@ -28,6 +27,7 @@ export function AddFund(props: Props) {
         try {
             await MonitorApi.addMonitor({...vs, fundId: props.fund?.id})
             await Taro.showToast({title: '添加成功'})
+            Taro.reLaunch({url: '/pages/home/index'})
         } catch {
             await Taro.showToast({title: '添加失败', icon: 'none'})
         }

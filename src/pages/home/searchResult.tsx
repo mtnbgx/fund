@@ -38,7 +38,6 @@ class Index extends Component {
 
     action = (fund: Fund) => {
         return <CButton onClick={() => {
-            console.log(fund)
             this.setState({fund, visible: true})
         }}
           size='mini'

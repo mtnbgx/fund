@@ -8,17 +8,19 @@ interface Auth {
     time: number
 }
 
+const StorageKey = process.env.NODE_ENV === 'development' ? 'auth_dev' : 'auth'
+
 export class AppStore {
     @observable
     auth: Auth
 
     constructor() {
-        this.auth = Taro.getStorageSync('auth')
+        this.auth = Taro.getStorageSync(StorageKey)
     }
 
     setAuth(auth: Auth) {
         this.auth = auth
-        Taro.setStorageSync('auth', auth)
+        Taro.setStorageSync(StorageKey, auth)
     }
 
     @action

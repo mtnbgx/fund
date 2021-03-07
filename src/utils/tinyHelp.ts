@@ -10,8 +10,7 @@ export const tinyHelp = {
             Taro.showActionSheet({
                 itemList,
                 success: function (res) {
-                    // @ts-ignore
-                    resolve(res.tapIndex ? res.tapIndex : res.index)
+                    resolve(res.tapIndex)
                 },
                 fail: function () {
                     resolve(-1)
